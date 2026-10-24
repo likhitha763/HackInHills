@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SealedBid - Secure Adversarial AI Safety Testing Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-badge">🛡️</div>
+        <div>
+          <h1>SEALEDBID <span class="badge live">SECURE MESH</span></h1>
+          <p class="subtitle">Multi-Tenant Adversarial AI Safety Testing & Zero-Trust Sandbox</p>
+        </div>
+      </div>
+      <div class="isolation-status-bar">
+        <div class="status-pill"><span class="indicator green"></span> RED-NET: ISOLATED</div>
+        <div class="status-pill"><span class="indicator green"></span> BLUE-NET: ISOLATED</div>
+        <div class="status-pill"><span class="indicator green"></span> KV-CACHE PURGE: ACTIVE</div>
+      </div>
+    </header>
+
+    <!-- Metrics Bar -->
+    <section class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">TOTAL EVALUATIONS</div>
+        <div class="metric-val" id="metric-total">0</div>
+        <div class="metric-sub">Adversarial runs completed</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">ATTACK SUCCESS RATE (ASR)</div>
+        <div class="metric-val danger" id="metric-asr">0.0%</div>
+        <div class="metric-sub">Bypassed safety filters</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">DEFENSE BLOCK RATE</div>
+        <div class="metric-val success" id="metric-defense">100.0%</div>
+        <div class="metric-sub">Neutralized before LLM</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">LEDGER INTEGRITY</div>
+        <div class="metric-val safe" id="metric-integrity">VERIFIED ✓</div>
+        <div class="metric-sub">SHA-256 Merkle Hash-Chain</div>
+      </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <div class="main-layout">
+      <!-- Left Panel: Attack Execution & Sandbox Controls -->
+      <section class="panel execution-panel">
+        <div class="panel-header">
+          <h2>⚔️ Adversarial Attack Vector Generator (Red Team)</h2>
+          <span class="tag red-tag">Tenant: red-net</span>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="benchmark-select">Select Standard Benchmark Attack:</label>
+            <select id="benchmark-select" class="custom-select">
+              <option value="">-- Choose AdvBench / HarmBench Vector --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="custom-prompt">Or Custom Adversarial Prompt / Injection:</label>
+            <textarea id="custom-prompt" rows="3" placeholder="Enter adversarial jailbreak or prompt injection payload..."></textarea>
+          </div>
+
+          <button id="btn-run-attack" class="btn btn-primary">
+            🚀 Launch Sandboxed Evaluation Run
+          </button>
+        </div>
+
+        <!-- Latest Evaluation Output -->
+        <div class="panel-header" style="margin-top: 1.5rem;">
+          <h2>📊 Real-Time Evaluation Result</h2>
+        </div>
+        <div class="panel-body">
+          <div id="eval-result-card" class="result-box empty">
+            <p class="placeholder-text">Click "Launch Sandboxed Evaluation Run" to execute an isolated test across tenants.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Cryptographic Audit Trail -->
+      <section class="panel ledger-panel">
+        <div class="panel-header">
+          <h2>🔗 Tamper-Evident Forensic Audit Ledger</h2>
+          <button id="btn-verify-chain" class="btn btn-secondary">Verify Ledger</button>
+        </div>
+        <div class="panel-body">
+          <div class="ledger-desc">
+            Every evaluation, payload, defense verdict, and context purge is cryptographically chained using SHA-256 hashes.
+          </div>
+          <div id="ledger-stream" class="ledger-stream">
+            <!-- Ledger blocks will be rendered here -->
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+version: '3.8'
+
+networks:
+  # Micro-segmented internal networks to prevent cross-tenant traffic leakage
+  red-net:
+    internal: true
+  blue-net:
+    internal: true
+  llm-net:
+    internal: true
+  broker-net:
+    driver: bridge
+
+services:
+  # Central Zero-Trust Orchestrator Broker
+  orchestrator:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: sealedbid-orchestrator
+    ports:
+      - "8000:8000"
+    networks:
+      - broker-net
+      - red-net
+      - blue-net
+      - llm-net
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  # Red Team Container (Adversary Environment)
+  red-team-agent:
+    image: alpine:latest
+    container_name: sealedbid-red-team
+    command: ["sleep", "infinity"]
+    networks:
+      - red-net
+    security_opt:
+      - no-new-privileges:true
+      - seccomp:unconfined
+    cap_drop:
+      - ALL
+    user: "1000:1000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # Blue Team Container (Defense & Guardrails Environment)
+  blue-team-guard:
+    image: alpine:latest
+    container_name: sealedbid-blue-team
+    command: ["sleep", "infinity"]
+    networks:
+      - blue-net
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    user: "1001:1001"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # Client LLM Sandbox (Stateless Inference Boundary)
+  model-sandbox:
+    image: alpine:latest
+    container_name: sealedbid-model-sandbox
+    command: ["sleep", "infinity"]
+    networks:
+      - llm-net
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    user: "1002:1002"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
